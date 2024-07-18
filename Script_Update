@@ -1,0 +1,117 @@
+# Função para calcular a pressão utilizando a equação de van der Waals
+def calcular_pressao_van_der_waals(n, T, V, a, b):
+    R = 0.0821  # Constante dos gases ideais em atm * L / mol * K
+    
+    # Calculando a pressão
+    p = (n * R * T / (V - n * b)) - (a * n**2 / V**2)
+    
+    return p
+
+# Função para converter a pressão para outras unidades
+def converter_pressao(p_atm):
+    print(f"O valor de p em atm é: {p_atm}")
+    
+    # Pergunta se deseja converter e realiza a conversão
+    resposta = input("Deseja converter a pressão para outras unidades? (S/N): ").strip().lower()
+    if resposta == 's':
+        print("Unidades disponíveis para conversão:")
+        
+        # Definindo as unidades de pressão e aplicando as fórmulas de conversão
+        unidades = {
+            'Pa': p_atm * 101325,  # atm para Pascal
+            'kPa': p_atm * 101.325,  # atm para kilopascal
+            'bar': p_atm * 1.01325,  # atm para bar
+            'mmHg': p_atm * 760,  # atm para mmHg
+            'psi': p_atm * 14.6959  # atm para psi
+        }
+        
+        # Exibindo as opções de unidades
+        print("1 - Pa")
+        print("2 - kPa")
+        print("3 - bar")
+        print("4 - mmHg")
+        print("5 - psi")
+        
+        # Escolhe a unidade para conversão
+        opcao = input("Digite o número correspondente à unidade de pressão desejada para conversão: ").strip()
+        if opcao == '1':
+            print(f"Pa: {unidades['Pa']}")
+        elif opcao == '2':
+            print(f"kPa: {unidades['kPa']}")
+        elif opcao == '3':
+            print(f"bar: {unidades['bar']}")
+        elif opcao == '4':
+            print(f"mmHg: {unidades['mmHg']}")
+        elif opcao == '5':
+            print(f"psi: {unidades['psi']}")
+        else:
+            print("Opção inválida.")
+    else:
+        print("Fim do programa.")
+
+# Função principal para executar o fluxo de trabalho
+def main():
+    print("Escolha a variável de interesse para calcular usando a equação de van der Waals:")
+    print("1 - Calcular pressão (p)")
+    print("2 - Calcular volume (V)")
+    print("3 - Calcular número de moles (n)")
+    print("4 - Calcular temperatura (T)")
+    print("5 - Calcular Constante dos Gases (R)")
+    
+    escolha = input("Digite a opção desejada: ").strip()
+    
+    if escolha == '1':
+        unidades_volume = {
+            '1': 'dm³',
+            '2': 'm³',
+            '3': 'L'
+        }
+        
+        unidade_volume = input("Escolha a unidade para volume:\n1 - dm³\n2 - m³\n3 - L\nDigite o número correspondente à unidade de volume: ").strip()
+        if unidade_volume not in unidades_volume:
+            print("Opção inválida.")
+            return
+        
+        volume = float(input("Digite o valor do volume (em Litros): "))
+        
+        n = float(input("Digite o valor do número de moles: "))
+        
+        unidades_temperatura = {
+            '1': 'F°',
+            '2': 'C°',
+            '3': 'K'
+        }
+        
+        unidade_temperatura = input("Escolha a unidade para temperatura:\n1 - F°\n2 - C°\n3 - K\nDigite o número correspondente à unidade de temperatura: ").strip()
+        if unidade_temperatura not in unidades_temperatura:
+            print("Opção inválida.")
+            return
+        
+        temperatura = float(input("Digite o valor da temperatura: "))
+        
+        a = float(input("Digite o valor de a: "))
+        b = float(input("Digite o valor de b: "))
+        
+        # Convertendo volume para litros, se necessário
+        if unidade_volume == '1':  # dm³ para Litros
+            volume *= 0.001
+        elif unidade_volume == '2':  # m³ para Litros
+            volume *= 1000
+        
+        # Convertendo temperatura, se necessário
+        if unidade_temperatura == '1':  # F° para K
+            temperatura = (temperatura - 32) * 5 / 9 + 273.15
+        elif unidade_temperatura == '2':  # C° para K
+            temperatura += 273.15
+        
+        # Chamando função para calcular a pressão
+        p_atm = calcular_pressao_van_der_waals(n, temperatura, volume, a, b)
+        
+        # Exibindo o resultado
+        converter_pressao(p_atm)
+        
+    else:
+        print("Opção não implementada.")
+
+if __name__ == "__main__":
+    main()
